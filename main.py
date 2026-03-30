@@ -117,6 +117,16 @@ def search_video(query: str, db_dir: str = "chroma_db", limit: int = 5):
         print(f"URL: {url}")
         print("-" * 50)
 
+def clear_db(db_dir: str = "chroma_db"):
+    """ChromaDBのデータをクリアする"""
+    import shutil
+    if os.path.exists(db_dir):
+        print(f"データベースディレクトリ {db_dir} を削除しています...")
+        shutil.rmtree(db_dir)
+        print("データベースをクリアしました。")
+    else:
+        print(f"データベースディレクトリ {db_dir} は存在しません。")
+
 def main():
     parser = argparse.ArgumentParser(description="YouTube字幕 RAG システム (完全無料・ローカル版)")
     subparsers = parser.add_subparsers(dest="command", help="実行コマンド")
@@ -130,12 +140,17 @@ def main():
     search_parser.add_argument("query", help="検索クエリ")
     search_parser.add_argument("--limit", type=int, default=5, help="返却する結果の数")
 
+    # clear-dbコマンド
+    subparsers.add_parser("clear-db", help="ChromaDBのデータをクリア")
+
     args = parser.parse_args()
 
     if args.command == "ingest":
         ingest_video(args.url)
     elif args.command == "search":
         search_video(args.query, limit=args.limit)
+    elif args.command == "clear-db":
+        clear_db()
     else:
         parser.print_help()
 

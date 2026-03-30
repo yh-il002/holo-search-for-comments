@@ -5,7 +5,7 @@ import os
 sys.path.insert(0, os.path.dirname(__file__))
 
 from mcp.server.fastmcp import FastMCP
-from main import ingest_video, search_video
+from main import ingest_video, search_video, clear_db
 
 DB_DIR = os.path.join(os.path.dirname(__file__), "chroma_db")
 
@@ -65,6 +65,18 @@ def search(query: str, limit: int = 5) -> str:
             lines.append("")
 
         return "\n".join(lines)
+    except Exception as e:
+        return f"エラー: {e}"
+
+
+@mcp.tool()
+def clear() -> str:
+    """
+    ChromaDBに登録されているすべてのデータを消去します。
+    """
+    try:
+        clear_db(db_dir=DB_DIR)
+        return "データベースのデータをすべて消去しました。"
     except Exception as e:
         return f"エラー: {e}"
 
