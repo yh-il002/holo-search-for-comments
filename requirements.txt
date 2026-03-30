@@ -1,0 +1,9 @@
+youtube-transcript-api
+langchain
+langchain-community
+langchain-huggingface
+langchain-text-splitters
+chromadb
+python-dotenv
+pydantic
+sentence-transformers
